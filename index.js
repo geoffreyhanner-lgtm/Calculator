@@ -1,21 +1,44 @@
-//calculator progam
+const buttonsEl = document.querySelectorAll("button")
 
-const display = document.getElementById("display");
+const inputFieldEl = document.getElementById("result")
 
-function appendToDisplay(input){
-	display.value += input;
+let shouldClearScreen = false;
 
+for (let i = 0; i < buttonsEl.length; i++){
+	buttonsEl[i].addEventListener("click", () => {
+		const buttonValue = buttonsEl[i].textContent;
+		if (buttonValue === "C") {
+			clearResult()
+		} else if (buttonValue === "="){
+			calculateResult() 
+		} else {
+			appendValue(buttonValue);
+		}
+	})
 }
 
-function clearDisplay(){
-	display.value = "";
+function clearResult() {
+	inputFieldEl.value = ""
+	shouldClearScreen = false;
 }
 
-function calculate(){
-	try{
-		display.value = eval(display.value)
-	}
-	catch(error){
-		display.value = "Error";
-	}
+function calculateResult() {
+	inputFieldEl.value = eval(inputFieldEl.value)
+	shouldClearScreen = true; 
+}
+
+function appendValue(buttonValue) {
+	const operators = ['+', '-', '*', '/'];
+
+  if (shouldClearScreen) {
+    if (operators.includes(buttonValue)) {
+      shouldClearScreen = false;
+    } else {
+      
+      inputFieldEl.value = "";
+      shouldClearScreen = false;
+    }
+  
+  }
+	inputFieldEl.value += buttonValue;
 }
